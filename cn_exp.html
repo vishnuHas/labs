@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CN Program — VTU Lab Mentor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+    <script src="data.js" defer></script>
+    <script src="cn_exp.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="brand">
+          <a href="cn.html" class="nav-link" style="padding:0">←</a>
+          <span class="title">Computer Network Lab</span>
+        </div>
+        <div class="actions">
+          <button id="themeToggle" class="btn ghost" aria-label="Toggle theme">🌙</button>
+        </div>
+      </div>
+    </header>
+    <main class="section">
+      <div class="container">
+        <article class="card glow" style="border-image: linear-gradient(120deg, #7abaff, #a9ff7a) 1;">
+          <div class="card-head">
+            <div class="card-title" id="cnTitle">CN Program</div>
+            <div class="card-subtitle">Animated multi-file C code</div>
+          </div>
+          <div class="card-body">
+            <div id="fileTabs" class="quick-nav" style="margin-bottom:8px; flex-wrap: wrap;"></div>
+            <div class="code-actions">
+              <button id="copyBtn" class="btn ghost" type="button">Copy</button>
+            </div>
+            <pre id="codeBlock" class="code-block" style="white-space: pre-wrap;"></pre>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-head">
+            <div class="card-title">Software</div>
+          </div>
+          <div class="card-body">
+            <div class="tool">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/1/18/C_Programming_Language.svg" alt="C" />
+              <div class="tool-info">
+                <div class="tool-title">C Compiler</div>
+                <div class="tool-desc">GCC/Clang or any standard C toolchain</div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </main>
+  </body>
+  </html>
+
+

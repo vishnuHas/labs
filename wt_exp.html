@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Web Tech Program — VTU Lab Mentor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+    <script src="data.js" defer></script>
+    <script src="wt_exp.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="brand">
+          <a href="wt.html" class="nav-link" style="padding:0">←</a>
+          <span class="title">Web Technology</span>
+        </div>
+        <div class="actions">
+          <button id="themeToggle" class="btn ghost" aria-label="Toggle theme">🌙</button>
+        </div>
+      </div>
+    </header>
+    <main class="section">
+      <div class="container">
+        <article class="card glow" style="border-image: linear-gradient(120deg, #ff7ab3, #ffd86f) 1;">
+          <div class="card-head">
+            <div class="card-title" id="wtTitle">Web Tech Program</div>
+            <div class="card-subtitle">Animated, colorized code</div>
+          </div>
+          <div class="card-body">
+            <div class="code-actions">
+              <button id="copyBtn" class="btn ghost" type="button">Copy</button>
+            </div>
+            <pre id="codeBlock" class="code-block wt" style="white-space: pre-wrap;"></pre>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-head">
+            <div class="card-title">Software</div>
+          </div>
+          <div class="card-body">
+            <div class="tool">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/6/61/HTML5_logo_and_wordmark.svg" alt="HTML" />
+              <div class="tool-info">
+                <div class="tool-title">HTML</div>
+                <div class="tool-desc">Markup for structure</div>
+              </div>
+            </div>
+            <div class="tool">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/d/d5/CSS3_logo_and_wordmark.svg" alt="CSS" />
+              <div class="tool-info">
+                <div class="tool-title">CSS</div>
+                <div class="tool-desc">Styles for presentation</div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </main>
+  </body>
+  </html>
+
+

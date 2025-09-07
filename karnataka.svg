@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 900" fill="none">
+  <!-- Stylized but closer-to-shape outline; replace with official GIS if desired -->
+  <path d="M220 40 L270 70 L320 60 L360 90 L390 140 L380 190 L410 230 L440 300 L430 360 L460 420 L430 480 L410 530 L420 580 L390 630 L360 670 L370 720 L340 760 L300 790 L290 840 L250 860 L210 830 L190 780 L170 740 L140 720 L120 680 L130 640 L110 600 L100 550 L120 510 L100 470 L110 420 L90 360 L110 310 L140 270 L150 220 L170 180 L180 130 L200 100 Z" stroke="white" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+  <style>
+    path { stroke-dasharray: 2400; stroke-dashoffset: 2400; animation: draw 4s ease forwards; }
+    @keyframes draw { to { stroke-dashoffset: 0; } }
+  </style>
+</svg>
+
+

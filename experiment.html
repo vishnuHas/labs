@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Experiment — VTU Lab Mentor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+    <script src="data.js" defer></script>
+    <script src="experiment.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="brand">
+          <a href="devops.html" class="nav-link" style="padding:0">←</a>
+          <span class="title">Experiment</span>
+        </div>
+        <div class="actions">
+          <button id="themeToggle" class="btn ghost" aria-label="Toggle theme">🌙</button>
+        </div>
+      </div>
+    </header>
+    <main class="section">
+      <div class="container">
+        <div class="exp-banner card glow" style="margin-bottom:16px;">
+          <div class="card-head">
+            <div class="card-title" id="expTitle">Experiment</div>
+            <div class="card-subtitle" id="expSubtitle">Details</div>
+            <div class="card-subtitle" id="expDescription" style="margin-top: 8px; font-size: 14px; color: var(--text-muted);"></div>
+          </div>
+        </div>
+        <div class="grid exp-grid">
+          <article class="card">
+            <div class="card-body">
+              <div id="player" class="video-player"></div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-head">
+              <div class="card-title">Tools Used <span class="kn">(ಬಳಸದ ಸಾಧನಗಳು)</span></div>
+            </div>
+            <div class="card-body">
+              <ul id="toolsList"></ul>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-head">
+              <div class="card-title">Manual <span class="kn">(ವಿಧಾನ)</span></div>
+            </div>
+            <div class="card-body">
+              <pre id="manualText" style="white-space: pre-wrap;"></pre>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-head">
+              <div class="card-title">Software Downloads <span class="kn">(ಸಾಫ್ಟ್ವೇರ್ ಡೌನ್‌ಲೋಡ್)</span></div>
+            </div>
+            <div class="card-body">
+              <div id="softwareGrid" class="grid tools"></div>
+              <p class="muted">Send exact software links per experiment and I’ll wire them in.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </main>
+
+    <!-- Floating Chat Widget -->
+    <div id="chatWidget" class="chat-widget" aria-live="polite">
+      <button class="chat-fab" id="chatFab" aria-label="Open AI Chat">💬</button>
+      <div class="chat-panel" aria-hidden="true">
+        <div class="chat-header">
+          <div class="chat-title">AI Lab Assistant</div>
+          <div class="chat-status">Online</div>
+          <button class="icon-btn" id="chatClose" aria-label="Close chat">✕</button>
+        </div>
+        <div id="chatBody" class="chat-body"></div>
+        <form id="chatForm" class="chat-input" autocomplete="off">
+          <input id="chatText" type="text" placeholder="Ask anything about this experiment..." required />
+          <button class="btn" type="submit">Send</button>
+        </form>
+      </div>
+    </div>
+  </body>
+  </html>
+
+

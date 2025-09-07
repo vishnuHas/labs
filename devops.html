@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DevOps Experiments — VTU Lab Mentor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+    <script src="data.js" defer></script>
+    <script src="devops.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="brand">
+          <a href="index.html" class="nav-link" style="padding:0">←</a>
+          <span class="title">DevOps Lab</span>
+        </div>
+        <div class="actions">
+          <button id="themeToggle" class="btn ghost" aria-label="Toggle theme">🌙</button>
+        </div>
+      </div>
+    </header>
+    <main class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2>All Experiments <span class="kn">(ಡೆವ್ಒಪ್ಸ್ ಪ್ರಯೋಗಗಳು)</span></h2>
+          <p class="muted">Pick one to open its dedicated page.</p>
+        </div>
+        <div class="devops-icons">
+          <div class="icon-card">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Maven_logo.svg" alt="Maven" />
+            <span>Maven</span>
+          </div>
+          <div class="icon-card">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/0/00/Gradle_logo.svg" alt="Gradle" />
+            <span>Gradle</span>
+          </div>
+          <div class="icon-card">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Devops-toolchain.svg" alt="DevOps" />
+            <span>DevOps</span>
+          </div>
+          <div class="icon-card">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/e/e9/Jenkins_logo.svg" alt="Jenkins" />
+            <span>Jenkins</span>
+          </div>
+        </div>
+        <div id="expGrid" class="grid cards exp-unique"></div>
+      </div>
+    </main>
+
+    <!-- Floating Chat Widget -->
+    <div id="chatWidget" class="chat-widget" aria-live="polite">
+      <button class="chat-fab" id="chatFab" aria-label="Open AI Chat">💬</button>
+      <div class="chat-panel" aria-hidden="true">
+        <div class="chat-header">
+          <div class="chat-title">AI Lab Assistant</div>
+          <div class="chat-status">Online</div>
+          <button class="icon-btn" id="chatClose" aria-label="Close chat">✕</button>
+        </div>
+        <div id="chatBody" class="chat-body"></div>
+        <form id="chatForm" class="chat-input" autocomplete="off">
+          <input id="chatText" type="text" placeholder="Ask anything about the lab..." required />
+          <button class="btn" type="submit">Send</button>
+        </form>
+      </div>
+    </div>
+  </body>
+  </html>
+
+
