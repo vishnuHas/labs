@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css" />
+    <script src="data.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
   </head>
@@ -23,6 +24,10 @@
           <a href="#devops" class="nav-link">DevOps</a>
         </nav>
         <div class="actions">
+          <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search labs... (min 3 chars)" class="search-input" />
+            <button id="searchBtn" class="btn ghost" aria-label="Search">🔍</button>
+          </div>
           <button id="themeToggle" class="btn ghost" aria-label="Toggle theme">🌙</button>
         </div>
       </div>
@@ -35,13 +40,22 @@
           <div class="hero-copy">
             <h1 class="hero-title">VTU Lab Mentor</h1>
             <p class="hero-tagline">Your one-stop companion for lab videos, manuals, tools, and AI help.</p>
-            <p class="hero-tagline kn">ನಿಮ್ಮ ಪ್ರಯೋಗಶಾಲೆಯ ಗೆಳೆಯ — ಕಲಿಕೆ ಸುಲಭ, ಗುರಿ ಸ್ಪಷ್ಟ.</p>
+            <p class="hero-tagline">Your lab companion — learning made easy, goals made clear.</p>
+            <div class="kn-row" aria-label="Highlights in Kannada">
+              <span class="kn-badge">ಕಲಿಕೆ</span>
+              <span class="kn-badge">ಪ್ರಯೋಗ</span>
+              <span class="kn-badge">ಜ್ಞಾನ</span>
+              <span class="kn-badge">ಸಹಾಯ</span>
+              <span class="kn-badge">ಸಾಧನೆ</span>
+            </div>
             <div class="quick-nav">
               <a href="devops.html" class="chip">Explore DevOps</a>
               <a href="ml.html" class="chip">Explore ML</a>
               <a href="cn.html" class="chip">Computer Networks</a>
               <a href="wt.html" class="chip">Web Technology</a>
-              <button class="chip" data-open-chat>AI Chat</button>
+              <a href="dsa.html" class="chip">Data Structures</a>
+              <a href="#os" class="chip">Operating Systems</a>
+              <button class="chip locked" aria-disabled="true" title="Locked">🔒 AI Chat</button>
             </div>
           </div>
           <div class="hero-visual">
@@ -49,6 +63,34 @@
             <div class="orb orb-blue"></div>
             <div class="orb orb-green"></div>
           </div>
+        </div>
+      </section>
+
+      <!-- Premium Projects (Top) -->
+      <section class="section premium-section" id="projects">
+        <div class="container">
+          <div class="section-head">
+            <h2><span class="premium-title">Projects</span> <span class="title-badge">Premium</span></h2>
+            <p class="premium-sub">Get end-to-end guided projects with documentation, clean code, and video walkthroughs.</p>
+          </div>
+          <article class="card premium-card">
+            <div class="sparkles"></div>
+            <div class="card-head">
+              <div class="card-title premium-title">Capstone-Ready Projects</div>
+              <div class="card-subtitle">Deployable apps, clean repos, and viva-ready notes</div>
+            </div>
+            <div class="card-body">
+              <div class="feature-row">
+                <img class="feature-icon" src="https://cdn-icons-png.flaticon.com/512/190/190411.png" alt="Project" style="width:48px;height:48px;" />
+                <p class="muted">Choose from Web, ML, DevOps, and CN projects. Includes requirements, architecture, documented code, and review support.</p>
+              </div>
+              <div class="price-row">
+                <span class="price-badge standard">₹3000 – ₹4000 / project</span>
+                <span class="price-badge student">Student Offer: ₹1999 – ₹2999</span>
+              </div>
+              <a class="btn locked" href="#contact" aria-disabled="true" title="Locked">🔒 Get Details</a>
+            </div>
+          </article>
         </div>
       </section>
 
@@ -64,7 +106,7 @@
               <div class="card-body">
                 <div class="feature-row">
                   <img class="feature-icon" src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=300&auto=format&fit=crop" alt="Laptop and notes" />
-                  <p class="muted">Structured experiments with clear manuals, checklists, and embedded videos. <span class="kn">ವಿದ್ಯಾರ್ಥಿಗಳಿಗೆ ಸ್ಪಷ್ಟ ದಾರಿ.</span></p>
+                  <p class="muted">Structured experiments with clear manuals, checklists, and embedded videos. Clear path for students.</p>
                 </div>
               </div>
             </article>
@@ -106,20 +148,50 @@
         </div>
       </section>
 
+      
+
+      <!-- Operating Systems (Restored) -->
+      <section id="os" class="section">
+        <div class="container">
+          <div class="section-head">
+            <h2>Operating Systems Lab</h2>
+            <p class="muted">Processes, CPU scheduling, IPC, deadlocks, memory, paging, files, disks.</p>
+          </div>
+          <div class="card devops-card dsa-card">
+            <div class="card-head">
+              <div class="card-title dsa-title">OS Lab — 10+ Programs</div>
+              <div class="card-subtitle">Same clean design and animations as other labs</div>
+            </div>
+            <div class="card-body">
+              <div class="feature-row">
+                <img class="feature-icon" src="https://upload.wikimedia.org/wikipedia/commons/1/18/C_Programming_Language.svg" alt="C Programming" style="width:48px;height:48px;" />
+                <p class="muted">Includes fork/exec/wait, scheduling (FCFS, SJF, RR, Priority), Producer–Consumer, FIFO, Banker, memory fits, page replacement, directory, SCAN disk.</p>
+              </div>
+              <a class="btn" href="os.html">Explore Programs</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      
+
       <!-- DevOps -->
       <section id="devops" class="section">
         <div class="container">
           <div class="section-head">
             <h2>DevOps Experiments</h2>
-            <p class="muted">12 curated DevOps programs with videos, tools, manuals, and AI help. <span class="kn">ಡೆವ್ಒಪ್ಸ್ ಪ್ರಯೋಗಗಳು</span></p>
+            <p class="muted">12 curated DevOps programs with videos, tools, manuals, and AI help.</p>
           </div>
-          <div class="card devops-card">
+          <div class="card devops-card dsa-card">
             <div class="card-head">
-              <div class="card-title">DevOps Lab — 12 Experiments</div>
+              <div class="card-title dsa-title">DevOps Lab — 12 Experiments</div>
               <div class="card-subtitle">Explore all experiments on a dedicated page</div>
             </div>
             <div class="card-body">
-              <p class="muted">Hands-on labs with video solutions, tools, manuals, and AI help.</p>
+              <div class="feature-row">
+                <img class="feature-icon" src="https://media.geeksforgeeks.org/wp-content/uploads/20230410112114/DevOps.png" alt="DevOps" style="width: 48px; height: 48px;" />
+                <p class="muted">Hands-on labs with video solutions, tools, manuals, and AI help.</p>
+              </div>
               <a class="btn" href="devops.html">Explore Experiments</a>
             </div>
           </div>
@@ -133,13 +205,16 @@
             <h2>Machine Learning Programs</h2>
             <p class="muted">Code-only ML programs with animated playback and Python setup.</p>
           </div>
-          <div class="card devops-card">
+          <div class="card devops-card dsa-card">
             <div class="card-head">
-              <div class="card-title">ML Lab — 10 Programs</div>
+              <div class="card-title dsa-title">ML Lab — 10 Programs</div>
               <div class="card-subtitle">Explore code-first experiments</div>
             </div>
             <div class="card-body">
-              <p class="muted">Includes visualization, PCA, k-NN, Trees, Naive Bayes, k-Means and more.</p>
+              <div class="feature-row">
+                <img class="feature-icon" src="https://upload.wikimedia.org/wikipedia/commons/0/05/Scikit_learn_logo_small.svg" alt="Machine Learning" style="width: 48px; height: 48px;" />
+                <p class="muted">Includes visualization, PCA, k-NN, Trees, Naive Bayes, k-Means and more.</p>
+              </div>
               <a class="btn" href="ml.html">Explore Experiments</a>
             </div>
           </div>
@@ -153,13 +228,16 @@
             <h2>Web Technology Programs</h2>
             <p class="muted">Pure HTML/CSS/JS programs with colorful animated code.</p>
           </div>
-          <div class="card devops-card">
+          <div class="card devops-card dsa-card">
             <div class="card-head">
-              <div class="card-title">WT Lab — 14 Programs</div>
+              <div class="card-title dsa-title">WT Lab — 14 Programs</div>
               <div class="card-subtitle">Explore code-first web tech programs</div>
             </div>
             <div class="card-body">
-              <p class="muted">Includes HTML basics, forms, layouts, JSON, Ajax, jQuery, PHP and more.</p>
+              <div class="feature-row">
+                <img class="feature-icon" src="https://upload.wikimedia.org/wikipedia/commons/6/61/HTML5_logo_and_wordmark.svg" alt="Web Technology" style="width: 48px; height: 48px;" />
+                <p class="muted">Includes HTML basics, forms, layouts, JSON, Ajax, jQuery, PHP and more.</p>
+              </div>
               <a class="btn" href="wt.html">Explore Programs</a>
             </div>
           </div>
@@ -173,19 +251,67 @@
             <h2>Computer Network Lab</h2>
             <p class="muted">C-based socket programming, routing algorithms, and traffic shaping.</p>
           </div>
-          <div class="card devops-card">
+          <div class="card devops-card dsa-card">
             <div class="card-head">
-              <div class="card-title">CN Lab — 15 Programs</div>
+              <div class="card-title dsa-title">CN Lab — 15 Programs</div>
               <div class="card-subtitle">Explore code for TCP, HTTP, DNS, CRC, DV/LS, and more</div>
             </div>
             <div class="card-body">
-              <p class="muted">Open the list to view colorized C code with copy support.</p>
+              <div class="feature-row">
+                <img class="feature-icon" src="https://upload.wikimedia.org/wikipedia/commons/1/18/C_Programming_Language.svg" alt="Computer Networks" style="width: 48px; height: 48px;" />
+                <p class="muted">Open the list to view colorized C code with copy support.</p>
+              </div>
               <a class="btn" href="cn.html">Explore Programs</a>
             </div>
           </div>
         </div>
       </section>
+
+      <!-- Data Structures and Algorithms -->
+      <section id="dsa" class="section">
+        <div class="container">
+          <div class="section-head">
+            <h2>Data Structures and Algorithms</h2>
+            <p class="muted">Comprehensive C programs covering arrays, stacks, queues, linked lists, trees, graphs, and more.</p>
+          </div>
+          <div class="card devops-card dsa-card">
+            <div class="card-head">
+              <div class="card-title dsa-title">DSA Lab — 13 Programs</div>
+              <div class="card-subtitle">Master fundamental data structures and algorithms with syntax-highlighted code</div>
+            </div>
+            <div class="card-body">
+              <div class="feature-row">
+                <img class="feature-icon" src="https://upload.wikimedia.org/wikipedia/commons/1/18/C_Programming_Language.svg" alt="C Programming" style="width: 48px; height: 48px;" />
+                <p class="muted">Includes arrays, strings, stacks, queues, linked lists, trees, graphs, hashing, and recursion with clean C code and animations.</p>
+              </div>
+              <a class="btn" href="dsa.html">Explore Programs</a>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
+
+    <!-- Search Overlay -->
+    <div id="searchOverlay" class="search-overlay"></div>
+    <div id="searchResults" class="search-results">
+      <button id="searchClose" class="search-close" aria-label="Close search">×</button>
+      <div id="searchContent"></div>
+    </div>
+
+    <!-- AI Chat Modal -->
+    <div id="aiChatOverlay" class="ai-chat-overlay">
+      <div id="aiChatModal" class="ai-chat-modal">
+        <div class="ai-chat-header">
+          <h3>AI Lab Assistant</h3>
+          <button id="aiChatClose" class="ai-chat-close" aria-label="Close AI chat">×</button>
+        </div>
+        <div id="aiChatMessages" class="ai-chat-messages"></div>
+        <div class="ai-chat-input-container">
+          <input type="text" id="aiChatInput" placeholder="Ask me anything about labs..." class="ai-chat-input" />
+          <button id="aiChatSend" class="ai-chat-send">Send</button>
+        </div>
+      </div>
+    </div>
 
     <footer class="site-footer">
       <div class="container footer-inner">

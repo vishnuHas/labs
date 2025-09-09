@@ -13,9 +13,9 @@ themeToggleCN.textContent = document.body.classList.contains('theme-light') ? 'â
 const { cnPrograms } = window.CN_DATA;
 const cnGrid = document.getElementById('cnGrid');
 cnGrid.innerHTML = cnPrograms.map(p => `
-  <article class="card exp-card">
+  <article class="card exp-card dsa-card">
     <div class="card-body">
-      <div class="media-title">${p.title}</div>
+      <div class="media-title dsa-title">${p.title}</div>
       <div class="media-desc">C â€¢ Multiple files</div>
       <a class="btn" href="cn_exp.html?id=${encodeURIComponent(p.id)}">Open</a>
     </div>

@@ -18,25 +18,22 @@ const ml = mlExperiments.find(m => m.id === mlId) || mlExperiments[0];
 document.title = `${ml.title} — VTU Lab Mentor`;
 document.getElementById('mlTitle').textContent = ml.title;
 
-// Typewriter animation for code with richer highlight
+// Typewriter animation for code, then highlight
 const codeBlock = document.getElementById('codeBlock');
-let code = ml.code;
-// highlight comments first
-code = code.replace(/(^|\n)\s*#(.*)/g, (m, p1, p2) => `${p1}<span class="cm">#${p2}<\/span>`);
-// keywords, builtins
-code = code.replace(/\b(import|from|as|for|in|if|else|elif|return|def|class|print|True|False|None|with|try|except|finally|raise|yield|lambda)\b/g, '<span class="kw">$1<\/span>');
-// strings
-code = code.replace(/'(.*?)'|"(.*?)"/g, (m) => `<span class="str">${m}<\/span>`);
-// numbers
-code = code.replace(/\b(\d+\.?\d*)\b/g, '<span class="num">$1<\/span>');
-
+function applyHL(){
+  if (!codeBlock.querySelector('code')){
+    const c=document.createElement('code'); c.className='hljs'; c.textContent=codeBlock.textContent; codeBlock.innerHTML=''; codeBlock.appendChild(c);
+  }
+  if (window.hljs) window.hljs.highlightElement(codeBlock.querySelector('code'));
+}
+let code = ml.code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 let idx = 0;
 function typeNext() {
   if (idx <= code.length) {
     codeBlock.innerHTML = code.slice(0, idx);
     idx += Math.max(1, Math.floor(Math.random() * 3));
-    setTimeout(typeNext, 8); // speed
-  }
+    setTimeout(typeNext, 8);
+  } else { applyHL(); }
 }
 typeNext();
 

@@ -20,6 +20,18 @@ document.getElementById('cnTitle').textContent = prog.title;
 
 const fileTabs = document.getElementById('fileTabs');
 const codeBlock = document.getElementById('codeBlock');
+
+function applyHL(){
+  if (!codeBlock) return;
+  if (!codeBlock.querySelector('code')){
+    const codeEl = document.createElement('code');
+    codeEl.className = 'hljs';
+    codeEl.textContent = codeBlock.textContent;
+    codeBlock.innerHTML = '';
+    codeBlock.appendChild(codeEl);
+  }
+  if (window.hljs) window.hljs.highlightElement(codeBlock.querySelector('code'));
+}
 let typingToken = 0;
 const copyBtn = document.getElementById('copyBtn');
 
@@ -34,12 +46,8 @@ function fileLabel(name){
 let currentFile = files[0];
 
 function highlightC(src){
-  let s = src.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  s = s.replace(/\/(\/|\*)([\s\S]*?)(\*\/)?$/gm, (m)=>`<span class="cm">${m}</span>`);
-  s = s.replace(/\b(int|long|char|float|double|void|return|if|else|for|while|do|switch|case|break|continue|struct|typedef|define|include|printf|scanf)\b/g,'<span class="kw">$1</span>');
-  s = s.replace(/"([\s\S]*?)"/g,'<span class="str">"$1"</span>');
-  s = s.replace(/\b(\d+)\b/g,'<span class="num">$1</span>');
-  return s;
+  // Just escape HTML characters, no highlighting
+  return src.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
 function typeCode(html){
@@ -52,6 +60,8 @@ function typeCode(html){
       codeBlock.innerHTML = html.slice(0, i);
       i += Math.max(1, Math.floor(Math.random() * 3));
       setTimeout(step, 6);
+    } else {
+      applyHL();
     }
   }
   step();

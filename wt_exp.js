@@ -18,24 +18,20 @@ const wt = wtPrograms.find(p => p.id === wtId) || wtPrograms[0];
 document.title = `${wt.title} — VTU Lab Mentor`;
 document.getElementById('wtTitle').textContent = wt.title;
 
-// Colorful code typing (HTML/CSS emphasis)
+// Code typing then highlight
 const codeBlockWT = document.getElementById('codeBlock');
-let codeWT = wt.code
-  .replace(/(&)/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-// tags
-codeWT = codeWT.replace(/(&lt;\/?)(\w[\w-]*)(.*?&gt;)/g, (m, p1, tag, rest) => `${p1}<span class="kw">${tag}</span>${rest}`);
-// strings
-codeWT = codeWT.replace(/(&quot;.*?&quot;|'.*?')/g, '<span class="str">$1</span>');
-// css properties inside style tags (simple)
-codeWT = codeWT.replace(/(\bcolor|background|padding|margin|border|font|width|height|display|position\b)(:)/g, '<span class="fn">$1</span>$2');
-
+function applyHLWT(){
+  if (!codeBlockWT.querySelector('code')){ const c=document.createElement('code'); c.className='hljs'; c.textContent=codeBlockWT.textContent; codeBlockWT.innerHTML=''; codeBlockWT.appendChild(c); }
+  if (window.hljs) window.hljs.highlightElement(codeBlockWT.querySelector('code'));
+}
+let codeWT = wt.code.replace(/(&)/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 let iWT = 0;
 function typeWT(){
   if (iWT <= codeWT.length) {
     codeBlockWT.innerHTML = codeWT.slice(0, iWT);
     iWT += Math.max(1, Math.floor(Math.random()*3));
     setTimeout(typeWT, 7);
-  }
+  } else { applyHLWT(); }
 }
 typeWT();
 

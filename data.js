@@ -494,4 +494,777 @@ int main() {
   return { cnPrograms };
 })();
 
+// Operating Systems Programs
+window.OS_DATA = (function(){
+  const osPrograms = [
+    { id: 'os-1', title: '1) Process System Calls — fork(), exec(), wait()', description: 'Create and manage processes; exec a command and wait.', software: [{ name: 'GCC Compiler', url: 'https://gcc.gnu.org/' }], code: `#include <stdio.h>\n#include <unistd.h>\n#include <sys/wait.h>\nint main(){pid_t pid=fork();if(pid<0){printf("Fork failed\\n");}else if(pid==0){printf("Child process: executing ls\\n");execl("/bin/ls","ls",NULL);}else{wait(NULL);printf("Parent process: child terminated\\n");}return 0;}`} ,
+    { id: 'os-2', title: '2a) FCFS CPU Scheduling', description: 'First-Come First-Serve scheduling.', software: [{ name: 'GCC Compiler', url: 'https://gcc.gnu.org/' }], code: `#include <stdio.h>\nint main(){int n,i;scanf("%d",&n);int bt[n],wt[n],tat[n];for(i=0;i<n;i++)scanf("%d",&bt[i]);wt[0]=0;for(i=1;i<n;i++)wt[i]=wt[i-1]+bt[i-1];for(i=0;i<n;i++){tat[i]=wt[i]+bt[i];printf("%d\\t%d\\t%d\\t%d\\n",i+1,bt[i],wt[i],tat[i]);}return 0;}`},
+    { id: 'os-3', title: '2b) SJF (Non-preemptive)', description: 'Shortest Job First.', software: [{ name: 'GCC Compiler', url: 'https://gcc.gnu.org/' }], code: `#include <stdio.h>\nint main(){int n,i,j;scanf("%d",&n);int bt[n],wt[n],tat[n],p[n];for(i=0;i<n;i++){scanf("%d",&bt[i]);p[i]=i+1;}for(i=0;i<n-1;i++)for(j=i+1;j<n;j++)if(bt[i]>bt[j]){int t=bt[i];bt[i]=bt[j];bt[j]=t;t=p[i];p[i]=p[j];p[j]=t;}wt[0]=0;for(i=1;i<n)i[wt]=wt[i-1]+bt[i-1];for(i=0;i<n;i++){tat[i]=wt[i]+bt[i];printf("%d\\t%d\\t%d\\t%d\\n",p[i],bt[i],wt[i],tat[i]);}return 0;}`},
+    { id: 'os-4', title: '2c) Round Robin', description: 'RR with time quantum.', software: [{ name: 'GCC Compiler', url: 'https://gcc.gnu.org/' }], code: `#include <stdio.h>\nint main(){int n,i,tq;scanf("%d",&n);int bt[n],rem[n],wt[n]={0};for(i=0;i<n;i++){scanf("%d",&bt[i]);rem[i]=bt[i];}scanf("%d",&tq);int done=0,t=0;while(done<n){done=0;for(i=0;i<n;i++){if(rem[i]>0){if(rem[i]>tq){rem[i]-=tq;t+=tq;}else{t+=rem[i];wt[i]=t-bt[i];rem[i]=0;}}else done++;}}for(i=0;i<n;i++)printf("%d\\t%d\\t%d\\t%d\\n",i+1,bt[i],wt[i],bt[i]+wt[i]);return 0;}`},
+    { id: 'os-5', title: '2d) Priority Scheduling', description: 'Non-preemptive priority.', software: [{ name: 'GCC Compiler', url: 'https://gcc.gnu.org/' }], code: `#include <stdio.h>\nint main(){int n,i,j;scanf("%d",&n);int bt[n],pr[n],wt[n],tat[n],p[n];for(i=0;i<n;i++){scanf("%d %d",&bt[i],&pr[i]);p[i]=i+1;}for(i=0;i<n-1;i++)for(j=i+1;j<n;j++)if(pr[i]>pr[j]){int t=pr[i];pr[i]=pr[j];pr[j]=t;t=bt[i];bt[i]=bt[j];bt[j]=t;t=p[i];p[i]=p[j];p[j]=t;}wt[0]=0;for(i=1;i<n;i++)wt[i]=wt[i-1]+bt[i-1];for(i=0;i<n;i++){tat[i]=bt[i]+wt[i];printf("%d\\t%d\\t%d\\t%d\\t%d\\n",p[i],bt[i],pr[i],wt[i],tat[i]);}return 0;}`},
+    { id: 'os-6', title: '3) Producer–Consumer (Semaphores)', description: 'Bounded buffer with semaphores.', software: [{ name: 'GCC (pthreads)', url: 'https://gcc.gnu.org/' }], code: `#include <stdio.h>\n#include <pthread.h>\n#include <semaphore.h>\n#include <unistd.h>\n#define SIZE 5\nint buffer[SIZE],in=0,out=0;sem_t empty,full;pthread_mutex_t mutex;void* producer(void* a){for(int i=0;i<10;i++){sem_wait(&empty);pthread_mutex_lock(&mutex);buffer[in]=i;in=(in+1)%SIZE;printf("Produced:%d\\n",i);pthread_mutex_unlock(&mutex);sem_post(&full);sleep(1);}return NULL;}void* consumer(void* a){int item;for(int i=0;i<10;i++){sem_wait(&full);pthread_mutex_lock(&mutex);item=buffer[out];out=(out+1)%SIZE;printf("Consumed:%d\\n",item);pthread_mutex_unlock(&mutex);sem_post(&empty);sleep(1);}return NULL;}int main(){pthread_t p,c;sem_init(&empty,0,SIZE);sem_init(&full,0,0);pthread_mutex_init(&mutex,NULL);pthread_create(&p,NULL,producer,NULL);pthread_create(&c,NULL,consumer,NULL);pthread_join(p,NULL);pthread_join(c,NULL);sem_destroy(&empty);sem_destroy(&full);pthread_mutex_destroy(&mutex);return 0;}`},
+    { id: 'os-7', title: '4) Reader–Writer using FIFO', description: 'Named pipe IPC.', software: [{ name: 'GCC', url: 'https://gcc.gnu.org/' }], code: `#include <stdio.h>\n#include <fcntl.h>\n#include <unistd.h>\n#include <sys/stat.h>\nint main(){char *fifo="/tmp/myfifo";mkfifo(fifo,0666);if(fork()==0){int fd=open(fifo,O_WRONLY);char msg[]="Hello from writer\\n";write(fd,msg,sizeof(msg));close(fd);}else{int fd=open(fifo,O_RDONLY);char buf[100];read(fd,buf,sizeof(buf));printf("Reader got: %s",buf);close(fd);}return 0;}`},
+    { id: 'os-8', title: '5) Banker\'s Algorithm', description: 'Deadlock avoidance.', software: [{ name: 'GCC', url: 'https://gcc.gnu.org/' }], code: `#include <stdio.h>\nint main(){int n,m,i,j;scanf("%d %d",&n,&m);int alloc[n][m],max[n][m],avail[m],need[n][m];for(i=0;i<n;i++)for(j=0;j<m;j++)scanf("%d",&alloc[i][j]);for(i=0;i<n;i++)for(j=0;j<m;j++)scanf("%d",&max[i][j]);for(i=0;i<m;i++)scanf("%d",&avail[i]);for(i=0;i<n;i++)for(j=0;j<m;j++)need[i][j]=max[i][j]-alloc[i][j];int finish[n];for(i=0;i<n;i++)finish[i]=0;int safe[n],idx=0;while(idx<n){int found=0;for(i=0;i<n;i++){if(!finish[i]){for(j=0;j<m;j++)if(need[i][j]>avail[j])break;if(j==m){for(j=0;j<m;j++)avail[j]+=alloc[i][j];safe[idx++]=i;finish[i]=1;found=1;}}}if(!found)break;}if(idx==n){for(i=0;i<n;i++)printf("P%d ",safe[i]);}else printf("No safe sequence\\n");return 0;}`},
+    { id: 'os-9', title: '6a) First Fit', description: 'Contiguous allocation — first fit.', software: [{ name: 'GCC', url: 'https://gcc.gnu.org/' }], code: `#include <stdio.h>\nint main(){int m,n,i,j;scanf("%d %d",&m,&n);int mem[m],proc[n];for(i=0;i<m;i++)scanf("%d",&mem[i]);for(i=0;i<n;i++)scanf("%d",&proc[i]);for(i=0;i<n;i++){for(j=0;j<m;j++){if(mem[j]>=proc[i]){printf("Process %d -> Block %d\\n",i,j);mem[j]-=proc[i];break;}}if(j==m)printf("Process %d not allocated\\n",i);}return 0;}`},
+    { id: 'os-10', title: '6b) Best Fit', description: 'Best fit block.', software: [{ name: 'GCC', url: 'https://gcc.gnu.org/' }], code: `#include <stdio.h>\nint main(){int m,n,i,j;scanf("%d %d",&m,&n);int mem[m],proc[n];for(i=0;i<m;i++)scanf("%d",&mem[i]);for(i=0;i<n;i++)scanf("%d",&proc[i]);for(i=0;i<n;i++){int best=-1;for(j=0;j<m;j++)if(mem[j]>=proc[i]&&(best==-1||mem[j]<mem[best]))best=j;if(best!=-1){mem[best]-=proc[i];printf("Process %d -> Block %d\\n",i,best);}else printf("Process %d not allocated\\n",i);}return 0;}`},
+    { id: 'os-11', title: '6c) Worst Fit', description: 'Worst fit block.', software: [{ name: 'GCC', url: 'https://gcc.gnu.org/' }], code: `#include <stdio.h>\nint main(){int m,n,i,j;scanf("%d %d",&m,&n);int mem[m],proc[n];for(i=0;i<m;i++)scanf("%d",&mem[i]);for(i=0;i<n;i++)scanf("%d",&proc[i]);for(i=0;i<n;i++){int worst=-1;for(j=0;j<m;j++)if(mem[j]>=proc[i]&&(worst==-1||mem[j]>mem[worst]))worst=j;if(worst!=-1){mem[worst]-=proc[i];printf("Process %d -> Block %d\\n",i,worst);}else printf("Process %d not allocated\\n",i);}return 0;}`},
+    { id: 'os-12', title: '7a) Page Replacement — FIFO', description: 'FIFO page replacement.', software: [{ name: 'GCC', url: 'https://gcc.gnu.org/' }], code: `#include <stdio.h>\nint main(){int n,f,i,j,page[50],frames[20],front=0;scanf("%d %d",&n,&f);for(i=0;i<n;i++)scanf("%d",&page[i]);for(i=0;i<f;i++)frames[i]=-1;int pf=0;for(i=0;i<n;i++){int hit=0;for(j=0;j<f;j++)if(frames[j]==page[i]){hit=1;break;}if(!hit){frames[front]=page[i];front=(front+1)%f;pf++;}}printf("Page faults: %d\\n",pf);return 0;}`},
+    { id: 'os-13', title: '7b) Page Replacement — LRU', description: 'LRU policy.', software: [{ name: 'GCC', url: 'https://gcc.gnu.org/' }], code: `#include <stdio.h>\nint main(){int n,f,i,j,page[50],frames[20],time[20],t=0;scanf("%d %d",&n,&f);for(i=0;i<n;i++)scanf("%d",&page[i]);for(i=0;i<f;i++){frames[i]=-1;time[i]=0;}int pf=0;for(i=0;i<n;i++){int hit=0;for(j=0;j<f;j++)if(frames[j]==page[i]){hit=1;time[j]=t++;break;}if(!hit){int pos=0;for(j=1;j<f;j++)if(time[j]<time[pos])pos=j;frames[pos]=page[i];time[pos]=t++;pf++;}}printf("Page faults: %d\\n",pf);return 0;}`},
+    { id: 'os-14', title: '8a) Single Level Directory', description: 'Single level directory listing.', software: [{ name: 'GCC', url: 'https://gcc.gnu.org/' }], code: `#include <stdio.h>\nint main(){char files[20][20];int n;scanf("%d",&n);for(int i=0;i<n;i++)scanf("%s",files[i]);for(int i=0;i<n;i++)printf("%s\\n",files[i]);return 0;}`},
+    { id: 'os-15', title: '8b) Two Level Directory', description: 'Two level directory.', software: [{ name: 'GCC', url: 'https://gcc.gnu.org/' }], code: `#include <stdio.h>\nint main(){int d;scanf("%d",&d);char dir[d][20][20];int nf[d];for(int i=0;i<d;i++){scanf("%d",&nf[i]);for(int j=0;j<nf[i];j++)scanf("%s",dir[i][j]);}for(int i=0;i<d;i++){printf("Dir %d:\\n",i);for(int j=0;j<nf[i];j++)printf("  %s\\n",dir[i][j]);}return 0;}`},
+    { id: 'os-16', title: '9) Linked File Allocation (Simulation)', description: 'List contiguous blocks.', software: [{ name: 'GCC', url: 'https://gcc.gnu.org/' }], code: `#include <stdio.h>\nint main(){int n;scanf("%d",&n);int start[n],len[n];for(int i=0;i<n;i++)scanf("%d %d",&start[i],&len[i]);for(int i=0;i<n;i++){printf("File %d blocks: ",i);for(int j=0;j<len[i];j++)printf("%d ",start[i]+j);printf("\\n");}return 0;}`},
+    { id: 'os-17', title: '10) SCAN Disk Scheduling', description: 'SCAN/elevator algorithm.', software: [{ name: 'GCC', url: 'https://gcc.gnu.org/' }], code: `#include <stdio.h>\nint main(){int n,head,i,j,seek=0;scanf("%d %d",&n,&head);int rq[n];for(i=0;i<n;i++)scanf("%d",&rq[i]);int a[n+1];a[0]=head;for(i=0;i<n;i++)a[i+1]=rq[i];for(i=0;i<=n;i++)for(j=i+1;j<=n;j++)if(a[i]>a[j]){int t=a[i];a[i]=a[j];a[j]=t;}int pos=0;for(i=0;i<=n;i++)if(a[i]==head){pos=i;break;}for(i=pos;i<n;i++)seek+=a[i+1]-a[i];for(i=pos;i>0;i--)seek+=a[i]-a[i-1];printf("Total seek: %d\\n",seek);return 0;}`}
+  ];
+  return { osPrograms };
+})();
+// Data Structures and Algorithms Programs (C programs with syntax highlighting)
+window.DSA_DATA = (function(){
+  const dsaPrograms = [
+    {
+      id: 'dsa-1',
+      title: '1) Arrays – Weekly Calendar Using Structures',
+      description: 'Implement a weekly calendar using arrays and structures to store day, date, and activity information.',
+      software: [{ name: 'GCC Compiler', url: 'https://gcc.gnu.org/', description: 'C compiler for running programs' }],
+      code: `#include <stdio.h>
+
+struct Week {
+    char day[20], act[50];
+    int date;
+} week[7];
+
+void read() {
+    for (int i = 0; i < 7; i++) {
+        scanf("%d %s %s", &week[i].date, week[i].day, week[i].act);
+    }
+}
+
+void display() {
+    for (int i = 0; i < 7; i++)
+        printf("Date:%d Day:%s Activity:%s\\n", week[i].date, week[i].day, week[i].act);
+}
+
+int main() {
+    read();
+    display();
+    return 0;
+}`
+    },
+    {
+      id: 'dsa-2',
+      title: '2) Strings – Pattern Replacement in a String',
+      description: 'Implement pattern replacement functionality in strings using string manipulation functions.',
+      software: [{ name: 'GCC Compiler', url: 'https://gcc.gnu.org/', description: 'C compiler for running programs' }],
+      code: `#include <stdio.h>
+#include <string.h>
+
+char str[100], pat[50], rep[50], ans[200];
+
+void replace() {
+    int i = 0, j = 0, k, flag = 0;
+    while (str[i] != '\\0') {
+        if (strncmp(&str[i], pat, strlen(pat)) == 0) {
+            for (k = 0; rep[k] != '\\0'; k++) ans[j++] = rep[k];
+            i += strlen(pat);
+            flag = 1;
+        } else {
+            ans[j++] = str[i++];
+        }
+    }
+    ans[j] = '\\0';
+    if (flag) printf("%s\\n", ans);
+    else printf("Pattern not found\\n");
+}
+
+int main() {
+    gets(str);
+    gets(pat);
+    gets(rep);
+    replace();
+    return 0;
+}`
+    },
+    {
+      id: 'dsa-3',
+      title: '3) Stack – Push, Pop, Display & Palindrome Check',
+      description: 'Implement stack operations (push, pop, display) and palindrome checking using stack.',
+      software: [{ name: 'GCC Compiler', url: 'https://gcc.gnu.org/', description: 'C compiler for running programs' }],
+      code: `#include <stdio.h>
+#include <string.h>
+#define MAX 100
+
+int s[MAX], top = -1;
+
+void push(int x) {
+    if (top == MAX - 1) printf("Overflow\\n");
+    else s[++top] = x;
+}
+
+void pop() {
+    if (top == -1) printf("Underflow\\n");
+    else printf("%d\\n", s[top--]);
+}
+
+void display() {
+    for (int i = top; i >= 0; i--) printf("%d ", s[i]);
+    printf("\\n");
+}
+
+void palindrome() {
+    char a[50], b[50];
+    scanf("%s", a);
+    strcpy(b, a);
+    strrev(b);
+    if (!strcmp(a, b)) printf("Palindrome\\n");
+    else printf("Not Palindrome\\n");
+}
+
+int main() {
+    int ch, x;
+    while (scanf("%d", &ch) != EOF) {
+        if (ch == 1) { scanf("%d", &x); push(x); }
+        else if (ch == 2) pop();
+        else if (ch == 3) display();
+        else if (ch == 4) palindrome();
+    }
+    return 0;
+}`
+    },
+    {
+      id: 'dsa-4',
+      title: '4) Infix to Postfix Conversion Using Stack',
+      description: 'Convert infix expressions to postfix notation using stack data structure.',
+      software: [{ name: 'GCC Compiler', url: 'https://gcc.gnu.org/', description: 'C compiler for running programs' }],
+      code: `#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+#define MAX 100
+
+char infix[MAX], postfix[MAX], stack[MAX];
+int top = -1;
+
+void push(char c) { stack[++top] = c; }
+char pop() { return stack[top--]; }
+int precedence(char c) {
+    if (c == '^') return 3;
+    if (c == '*' || c == '/') return 2;
+    if (c == '+' || c == '-') return 1;
+    return -1;
+}
+int isOperator(char c) { return (c=='+'||c=='-'||c=='*'||c=='/'||c=='^'); }
+
+void convert() {
+    int i = 0, j = 0;
+    while (infix[i]) {
+        if (isalnum(infix[i])) postfix[j++] = infix[i++];
+        else if (infix[i] == '(') push(infix[i++]);
+        else if (infix[i] == ')') {
+            while (top >= 0 && stack[top] != '(') postfix[j++] = pop();
+            pop(); i++;
+        } else if (isOperator(infix[i])) {
+            while (top >= 0 && precedence(stack[top]) >= precedence(infix[i]))
+                postfix[j++] = pop();
+            push(infix[i++]);
+        } else i++;
+    }
+    while (top >= 0) postfix[j++] = pop();
+    postfix[j] = '\\0';
+}
+
+int main() {
+    scanf("%s", infix);
+    convert();
+    printf("%s\\n", postfix);
+    return 0;
+}`
+    },
+    {
+      id: 'dsa-5a',
+      title: '5a) Postfix Expression Evaluation Using Stack',
+      description: 'Evaluate postfix expressions using stack data structure.',
+      software: [{ name: 'GCC Compiler', url: 'https://gcc.gnu.org/', description: 'C compiler for running programs' }],
+      code: `#include <stdio.h>
+#include <ctype.h>
+#include <math.h>
+
+int stack[20], top = -1;
+
+void push(int x) { stack[++top] = x; }
+int pop() { return stack[top--]; }
+
+int main() {
+    char postfix[50], symb;
+    int op1, op2;
+
+    scanf("%s", postfix);
+
+    for (int i = 0; postfix[i]; i++) {
+        symb = postfix[i];
+        if (isdigit(symb)) push(symb - '0');
+        else {
+            op2 = pop();
+            op1 = pop();
+            switch (symb) {
+                case '+': push(op1 + op2); break;
+                case '-': push(op1 - op2); break;
+                case '*': push(op1 * op2); break;
+                case '/': push(op1 / op2); break;
+                case '^': push((int)pow(op1, op2)); break;
+            }
+        }
+    }
+    printf("%d\\n", pop());
+    return 0;
+}`
+    },
+    {
+      id: 'dsa-5b',
+      title: '5b) Tower of Hanoi Using Recursion',
+      description: 'Solve Tower of Hanoi problem using recursive approach.',
+      software: [{ name: 'GCC Compiler', url: 'https://gcc.gnu.org/', description: 'C compiler for running programs' }],
+      code: `#include <stdio.h>
+
+void hanoi(int n, char from, char to, char aux) {
+    if (n == 1) {
+        printf("Move disk 1 from %c to %c\\n", from, to);
+        return;
+    }
+    hanoi(n - 1, from, aux, to);
+    printf("Move disk %d from %c to %c\\n", n, from, to);
+    hanoi(n - 1, aux, to, from);
+}
+
+int main() {
+    int n;
+    scanf("%d", &n);
+    hanoi(n, 'A', 'C', 'B');
+    return 0;
+}`
+    },
+    {
+      id: 'dsa-6',
+      title: '6) Circular Queue Implementation',
+      description: 'Implement circular queue with insert, delete, and display operations.',
+      software: [{ name: 'GCC Compiler', url: 'https://gcc.gnu.org/', description: 'C compiler for running programs' }],
+      code: `#include <stdio.h>
+#define MAX 5
+
+char q[MAX];
+int f = 0, r = 0;
+
+void insert(char e) {
+    if ((r + 1) % MAX == f) return; // Overflow
+    r = (r + 1) % MAX;
+    q[r] = e;
+}
+
+void delete() {
+    if (f == r) return; // Underflow
+    f = (f + 1) % MAX;
+    printf("%c\\n", q[f]);
+}
+
+void display() {
+    if (f == r) return; // Empty
+    int i = f;
+    while (i != r) {
+        i = (i + 1) % MAX;
+        printf("%c ", q[i]);
+    }
+    printf("\\n");
+}
+
+int main() {
+    int ch; char e;
+    while (scanf("%d", &ch) != EOF) {
+        if (ch == 1) { scanf(" %c", &e); insert(e); }
+        else if (ch == 2) delete();
+        else if (ch == 3) display();
+        else break;
+    }
+    return 0;
+}`
+    },
+    {
+      id: 'dsa-7',
+      title: '7) Singly Linked List – Student Record Management',
+      description: 'Implement student record management using singly linked list with CRUD operations.',
+      software: [{ name: 'GCC Compiler', url: 'https://gcc.gnu.org/', description: 'C compiler for running programs' }],
+      code: `#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    char name[25], usn[15], prog[10];
+    int sem, ph;
+    struct Node *link;
+} *head = NULL;
+
+struct Node* newNode() {
+    struct Node *n = malloc(sizeof(struct Node));
+    scanf("%s %s %s %d %d", n->name, n->usn, n->prog, &n->sem, &n->ph);
+    n->link = NULL;
+    return n;
+}
+
+void create(int n) {
+    for (int i = 0; i < n; i++) {
+        struct Node *node = newNode();
+        if (!head) head = node;
+        else {
+            struct Node *t = head;
+            while (t->link) t = t->link;
+            t->link = node;
+        }
+    }
+}
+
+void insertFront() {
+    struct Node *node = newNode();
+    node->link = head;
+    head = node;
+}
+
+void delFront() {
+    if (!head) return;
+    struct Node *t = head;
+    head = head->link;
+    free(t);
+}
+
+void insertEnd() {
+    struct Node *node = newNode();
+    if (!head) head = node;
+    else {
+        struct Node *t = head;
+        while (t->link) t = t->link;
+        t->link = node;
+    }
+}
+
+void delEnd() {
+    if (!head) return;
+    if (!head->link) { free(head); head = NULL; return; }
+    struct Node *t = head, *p = NULL;
+    while (t->link) { p = t; t = t->link; }
+    p->link = NULL;
+    free(t);
+}
+
+void display() {
+    for (struct Node *t = head; t; t = t->link)
+        printf("%s %s %s %d %d\\n", t->name, t->usn, t->prog, t->sem, t->ph);
+}
+
+int main() {
+    int ch, n;
+    while (scanf("%d", &ch) != EOF) {
+        if (ch == 1) { scanf("%d", &n); create(n); }
+        else if (ch == 2) insertFront();
+        else if (ch == 3) delFront();
+        else if (ch == 4) insertEnd();
+        else if (ch == 5) delEnd();
+        else if (ch == 6) display();
+        else break;
+    }
+    return 0;
+}`
+    },
+    {
+      id: 'dsa-8',
+      title: '8) Doubly Linked List Implementation',
+      description: 'Implement doubly linked list with create, insert, delete, and display operations.',
+      software: [{ name: 'GCC Compiler', url: 'https://gcc.gnu.org/', description: 'C compiler for running programs' }],
+      code: `#include <stdio.h>
+#include <stdlib.h>
+
+struct stud {
+    char ssn[11], name[15], desg[15], phno[11], dept[15];
+    float sal;
+    struct stud *next, *prev;
+} *f = NULL, *r = NULL, *t = NULL;
+
+void ins(int ch) {
+    t = (struct stud*)malloc(sizeof(struct stud));
+    printf("\\nEnter SSN Name Dept Desg Phno Salary: ");
+    scanf("%s %s %s %s %s %f", t->ssn, t->name, t->dept, t->desg, t->phno, &t->sal);
+    t->next = t->prev = NULL;
+    if (!r) f = r = t;
+    else if (ch) { r->next = t; t->prev = r; r = t; }
+    else { t->next = f; f->prev = t; f = t; }
+}
+
+void del(int ch) {
+    if (!f) { printf("\\nList Empty"); return; }
+    struct stud *t1;
+    if (f == r) { t1 = f; f = r = NULL; }
+    else if (ch) { t1 = r; r = r->prev; r->next = NULL; }
+    else { t1 = f; f = f->next; f->prev = NULL; }
+    printf("\\nDeleted: %s %s %s %s %s %.2f\\n", t1->ssn, t1->name, t1->dept, t1->desg, t1->phno, t1->sal);
+    free(t1);
+}
+
+void disp() {
+    if (!f) { printf("\\nList Empty"); return; }
+    printf("\\nList:\\n");
+    for (t = f; t; t = t->next)
+        printf("%s %s %s %s %s %.2f\\n", t->ssn, t->name, t->dept, t->desg, t->phno, t->sal);
+}
+
+int main() {
+    int ch, n, i;
+    while (1) {
+        printf("\\n1.Create 2.Display 3.InsEnd 4.DelEnd 5.InsBeg 6.DelBeg 7.Exit\\nChoice: ");
+        scanf("%d", &ch);
+        switch (ch) {
+            case 1: printf("Enter no. of nodes: "); scanf("%d", &n);
+                    for (i = 0; i < n; i++) ins(0); break;
+            case 2: disp(); break;
+            case 3: ins(1); break;
+            case 4: del(1); break;
+            case 5: ins(0); break;
+            case 6: del(0); break;
+            case 7: exit(0);
+            default: printf("\\nInvalid choice!");
+        }
+    }
+}`
+    },
+    {
+      id: 'dsa-9',
+      title: '9) Singly Linked List Representation of a Polynomial',
+      description: 'Implement polynomial evaluation and addition using singly linked list.',
+      software: [{ name: 'GCC Compiler', url: 'https://gcc.gnu.org/', description: 'C compiler for running programs' }],
+      code: `#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+typedef struct poly {
+    float coeff;
+    int x, y, z;
+    struct poly *next;
+} poly;
+
+poly *p1, *p2, *p3;
+
+poly* readterm() {
+    poly *t = (poly*)malloc(sizeof(poly));
+    scanf("%f %d %d %d", &t->coeff, &t->x, &t->y, &t->z);
+    return t;
+}
+
+poly* create() {
+    int n; scanf("%d", &n);
+    poly *h = (poly*)malloc(sizeof(poly)), *t = h;
+    for (int i = 0; i < n; i++, t = t->next) t->next = readterm();
+    t->next = h;
+    return h;
+}
+
+void evaluate(poly *p) {
+    float sum = 0; int x,y,z;
+    scanf("%d %d %d", &x, &y, &z);
+    for (poly *t = p->next; t != p; t = t->next)
+        sum += t->coeff * pow(x,t->x) * pow(y,t->y) * pow(z,t->z);
+    printf("Sum=%.2f\\n", sum);
+}
+
+void display(poly *p) {
+    for (poly *t = p->next; t != p; t = t->next) {
+        if (t != p->next && t->coeff > 0) printf("+");
+        printf("%.1fx^%dy^%dz^%d", t->coeff, t->x, t->y, t->z);
+    }
+    printf("\\n");
+}
+
+poly* attach(float c,int x,int y,int z,poly *p) {
+    poly *t = (poly*)malloc(sizeof(poly));
+    t->coeff=c; t->x=x; t->y=y; t->z=z;
+    p->next = t; return t;
+}
+
+poly* add() {
+    p1 = create(); p2 = create();
+    poly *t1=p1->next, *t2=p2->next, *t3;
+    p3 = (poly*)malloc(sizeof(poly)); t3 = p3;
+    while (t1!=p1 && t2!=p2) {
+        if (t1->x > t2->x) { t3=attach(t1->coeff,t1->x,t1->y,t1->z,t3); t1=t1->next; }
+        else if (t1->x < t2->x) { t3=attach(t2->coeff,t2->x,t2->y,t2->z,t3); t2=t2->next; }
+        else { t3=attach(t1->coeff+t2->coeff,t1->x,t1->y,t1->z,t3); t1=t1->next; t2=t2->next; }
+    }
+    for (;t1!=p1;t1=t1->next) t3=attach(t1->coeff,t1->x,t1->y,t1->z,t3);
+    for (;t2!=p2;t2=t2->next) t3=attach(t2->coeff,t2->x,t2->y,t2->z,t3);
+    t3->next=p3;
+    return p3;
+}
+
+int main() {
+    int ch;
+    printf("1.Evaluate 2.Add 3.Exit\\nChoice: "); scanf("%d",&ch);
+    switch(ch) {
+        case 1: p1=create(); display(p1); evaluate(p1); break;
+        case 2: p3=add(); printf("P1: "); display(p1); printf("P2: "); display(p2); printf("Sum: "); display(p3); break;
+        case 3: exit(0);
+    }
+    return 0;
+}`
+    },
+    {
+      id: 'dsa-10',
+      title: '10) Binary Search Tree (Insertion, Traversals, Search, and Deletion)',
+      description: 'Implement BST with insertion, deletion, search, and all three traversals.',
+      software: [{ name: 'GCC Compiler', url: 'https://gcc.gnu.org/', description: 'C compiler for running programs' }],
+      code: `#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct tree {
+    int data;
+    struct tree *l, *r;
+} *treeptr;
+
+treeptr newNode(int d) {
+    treeptr t = (treeptr)malloc(sizeof(*t));
+    t->data = d; t->l = t->r = NULL;
+    return t;
+}
+
+treeptr insert(treeptr root, int d) {
+    if (!root) return newNode(d);
+    if (d < root->data) root->l = insert(root->l, d);
+    else if (d > root->data) root->r = insert(root->r, d);
+    return root;
+}
+
+void inorder(treeptr r){ if(r){ inorder(r->l); printf("%d ",r->data); inorder(r->r);} }
+void preorder(treeptr r){ if(r){ printf("%d ",r->data); preorder(r->l); preorder(r->r);} }
+void postorder(treeptr r){ if(r){ postorder(r->l); postorder(r->r); printf("%d ",r->data);} }
+
+int search(treeptr r, int d) {
+    if (!r) return 0;
+    if (d == r->data) return 1;
+    return d < r->data ? search(r->l, d) : search(r->r, d);
+}
+
+treeptr findMin(treeptr r){ while(r->l) r=r->l; return r; }
+
+treeptr delete(treeptr r,int d){
+    if(!r) return NULL;
+    if(d < r->data) r->l = delete(r->l,d);
+    else if(d > r->data) r->r = delete(r->r,d);
+    else {
+        if(!r->l) return r->r;
+        if(!r->r) return r->l;
+        treeptr m = findMin(r->r);
+        r->data = m->data;
+        r->r = delete(r->r, m->data);
+    }
+    return r;
+}
+
+int main() {
+    treeptr root=NULL; 
+    int a[]={6,9,5,2,8,15,24,14,7,8,5,2};
+    for(int i=0;i<12;i++) root=insert(root,a[i]);
+
+    int ch,n;
+    while(1){
+        printf("\\n1.Inorder 2.Preorder 3.Postorder 4.Search 5.Delete 6.Exit\\nChoice: ");
+        scanf("%d",&ch);
+        switch(ch){
+            case 1: inorder(root); break;
+            case 2: preorder(root); break;
+            case 3: postorder(root); break;
+            case 4: scanf("%d",&n); printf(search(root,n)?"Found\\n":"Not Found\\n"); break;
+            case 5: scanf("%d",&n); root=delete(root,n); break;
+            case 6: exit(0);
+        }
+    }
+}`
+    },
+    {
+      id: 'dsa-11',
+      title: '11) Graph Traversals (BFS and DFS)',
+      description: 'Implement Breadth-First Search and Depth-First Search algorithms for graph traversal.',
+      software: [{ name: 'GCC Compiler', url: 'https://gcc.gnu.org/', description: 'C compiler for running programs' }],
+      code: `#include <stdio.h>
+#include <stdlib.h>
+
+int a[20][20], q[20], visited[20], reach[20];
+int n, f = 0, r = -1, count = 0;
+
+// Breadth First Search
+void bfs(int v) {
+    int i;
+    for (i = 1; i <= n; i++) {
+        if (a[v][i] && !visited[i]) {
+            visited[i] = 1;
+            q[++r] = i;
+        }
+    }
+    if (f <= r)
+        bfs(q[f++]);
+}
+
+// Depth First Search
+void dfs(int v) {
+    int i;
+    reach[v] = 1;
+    for (i = 1; i <= n; i++) {
+        if (a[v][i] && !reach[i]) {
+            printf("%d -> %d\\n", v, i);
+            count++;
+            dfs(i);
+        }
+    }
+}
+
+int main() {
+    int v, ch, i, j;
+
+    printf("\\nEnter number of vertices: ");
+    scanf("%d", &n);
+
+    // Initialize arrays
+    for (i = 1; i <= n; i++)
+        reach[i] = visited[i] = q[i] = 0;
+
+    printf("\\nEnter graph data in adjacency matrix form:\\n");
+    for (i = 1; i <= n; i++) {
+        for (j = 1; j <= n; j++) {
+            scanf("%d", &a[i][j]);
+        }
+    }
+
+    printf("\\nMENU\\n1. BFS\\n2. DFS\\n3. Exit\\nEnter choice: ");
+    scanf("%d", &ch);
+
+    switch (ch) {
+        case 1:
+            printf("\\nEnter starting vertex: ");
+            scanf("%d", &v);
+            visited[v] = 1;
+            bfs(v);
+
+            printf("\\nThe nodes reachable from %d are:\\n", v);
+            for (i = 1; i <= n; i++) {
+                if (visited[i])
+                    printf("%d ", i);
+            }
+            break;
+
+        case 2:
+            dfs(1);
+            if (count == n - 1)
+                printf("\\nGraph is connected");
+            else
+                printf("\\nGraph is not connected");
+            break;
+
+        case 3:
+            exit(0);
+
+        default:
+            printf("\\nInvalid choice");
+    }
+
+    return 0;
+}`
+    },
+    {
+      id: 'dsa-12',
+      title: '12) Hashing using Linear Probing',
+      description: 'Implement hash table with linear probing for collision resolution.',
+      software: [{ name: 'GCC Compiler', url: 'https://gcc.gnu.org/', description: 'C compiler for running programs' }],
+      code: `#include <stdio.h>
+#include <stdlib.h>
+
+int *ht, m, count = 0;
+
+void insert(int key) {
+    int index = key % m;
+    while (ht[index] != -1)
+        index = (index + 1) % m;
+    ht[index] = key;
+    count++;
+}
+
+void display() {
+    if (count == 0) {
+        printf("\\nHash Table is empty");
+        return;
+    }
+    for (int i = 0; i < m; i++)
+        printf("\\nT[%d] --> %d", i, ht[i]);
+}
+
+int main() {
+    int n;
+    printf("Enter number of records: ");
+    scanf("%d", &n);
+    printf("Enter table size: ");
+    scanf("%d", &m);
+    ht = (int *)malloc(m * sizeof(int));
+    for (int i = 0; i < m; i++) ht[i] = -1;
+
+    printf("Enter %d keys:\\n", n);
+    for (int i = 0; i < n; i++) {
+        int key; scanf("%d", &key);
+        if (count == m) {
+            printf("Table full, cannot insert %d\\n", key);
+            break;
+        }
+        insert(key);
+    }
+    display();
+    return 0;
+}`
+    },
+    {
+      id: 'dsa-13',
+      title: '13) Postfix Expression Evaluation using Stack',
+      description: 'Advanced postfix expression evaluation with support for multiple operators.',
+      software: [{ name: 'GCC Compiler', url: 'https://gcc.gnu.org/', description: 'C compiler for running programs' }],
+      code: `#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+#include <math.h>
+
+float compute(char symbol, float op1, float op2) {
+    switch (symbol) {
+        case '+': return op1 + op2;
+        case '-': return op1 - op2;
+        case '*': return op1 * op2;
+        case '/': return op1 / op2;
+        case '^': 
+        case '$': return pow(op1, op2);
+        default: return 0;
+    }
+}
+
+int main() {
+    float stack[20], res, op1, op2;
+    int top = -1;
+    char postfix[20], symbol;
+
+    printf("Enter postfix expression: ");
+    scanf("%s", postfix);
+
+    for (int i = 0; i < strlen(postfix); i++) {
+        symbol = postfix[i];
+        if (isdigit(symbol)) 
+            stack[++top] = symbol - '0';
+        else {
+            op2 = stack[top--];
+            op1 = stack[top--];
+            res = compute(symbol, op1, op2);
+            stack[++top] = res;
+        }
+    }
+    printf("Result = %f\\n", stack[top]);
+    return 0;
+}`
+    }
+  ];
+
+  return { dsaPrograms };
+})();
+
 

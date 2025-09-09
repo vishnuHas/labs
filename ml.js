@@ -13,9 +13,9 @@ themeToggleML.textContent = document.body.classList.contains('theme-light') ? '�
 const { mlExperiments } = window.ML_DATA;
 const mlGrid = document.getElementById('mlGrid');
 mlGrid.innerHTML = mlExperiments.map(m => `
-  <article class="card exp-card">
+  <article class="card exp-card dsa-card">
     <div class="card-body">
-      <div class="media-title">${m.title}</div>
+      <div class="media-title dsa-title">${m.title}</div>
       <div class="media-desc">Python code only • No manual • No video</div>
       <a class="btn" href="ml_exp.html?id=${encodeURIComponent(m.id)}">Open</a>
     </div>

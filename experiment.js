@@ -28,8 +28,7 @@ function pickIcon(title){
 const titleIcon = pickIcon(exp.title);
 document.getElementById('expTitle').innerHTML = titleIcon ? `<img src="${titleIcon}" alt="icon" style="height:20px;vertical-align:-4px;margin-right:6px;"> ${exp.title}` : exp.title;
 document.getElementById('expSubtitle').textContent = exp.subtitle || 'Watch, learn, and practice';
-const knHelp = 'ಕನ್ನಡ: ಹಂತ ಹಂತವಾಗಿ ಮಾಡಿ, ದೋಷ ಬಂದರೆ ಮರುಪ್ರಯತ್ನಿಸಿ.';
-document.getElementById('expDescription').innerHTML = `${exp.description || ''} <span class="kn">— ${knHelp}</span>`;
+document.getElementById('expDescription').textContent = exp.description || '';
 
 const player = document.getElementById('player');
 if (typeof exp.video === 'string' && exp.video.endsWith('.mp4')) {
@@ -64,6 +63,7 @@ if (softwareGrid && Array.isArray(exp.software)) {
   `).join('');
 }
 
+
 // GSAP intro
 window.addEventListener('DOMContentLoaded', () => {
   if (window.gsap) {
@@ -79,12 +79,108 @@ const chatBody = document.getElementById('chatBody');
 const chatForm = document.getElementById('chatForm');
 const chatText = document.getElementById('chatText');
 
+// Gemini API configuration
+const AI_API_KEY = 'AIzaSyBVnxv2G12vNqd9gTetGZvQ02LMJ9U-Fws';
+const AI_MODEL = 'gemini-2.5-flash';
+
+// Send message to Gemini API
+async function sendToGemini(message) {
+  const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${AI_MODEL}:generateContent?key=${AI_API_KEY}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      contents: [{
+        parts: [{
+          text: `You are an AI Lab Assistant for VTU students. You MUST respond ONLY in English. Never use Kannada, Hindi, or any other language. All responses must be in English.
+
+Help with lab experiment questions about:
+- DevOps: Docker, Kubernetes, CI/CD, Jenkins, Maven, Gradle
+- Machine Learning: Python, pandas, numpy, scikit-learn, data visualization
+- Web Technology: HTML, CSS, JavaScript, jQuery, PHP, AJAX
+- Computer Networks: TCP, UDP, HTTP, DNS, socket programming, routing
+- Data Structures & Algorithms: C programming, arrays, linked lists, trees, graphs
+
+Be helpful, concise, and provide practical examples. If the question is not related to these topics, politely redirect to lab-related questions.
+
+User question: ${message}`
+        }]
+      }],
+      generationConfig: {
+        temperature: 0.7,
+        topK: 40,
+        topP: 0.95,
+        maxOutputTokens: 1024,
+      }
+    })
+  });
+  
+  const data = await response.json();
+  
+  if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+    return data.candidates[0].content.parts[0].text;
+  } else {
+    throw new Error('No response from AI');
+  }
+}
+
 function openChatPanel() { chatPanel.classList.add('open'); chatPanel.setAttribute('aria-hidden', 'false'); setTimeout(()=>chatText.focus(),50); }
 function closeChatPanel() { chatPanel.classList.remove('open'); chatPanel.setAttribute('aria-hidden', 'true'); }
-chatFab.addEventListener('click', openChatPanel);
+// locked
 chatClose.addEventListener('click', closeChatPanel);
-function addBubble(text, who='bot'){ const d=document.createElement('div'); d.className=`bubble ${who}`; d.textContent=text; chatBody.appendChild(d); chatBody.scrollTop=chatBody.scrollHeight; }
-addBubble('ಈ ಪ್ರಯೋಗದ ಕುರಿತು ಪ್ರಶ್ನಿಸಿ. ನಾನು ಸಹಾಯ ಮಾಡುತ್ತೇನೆ!');
-chatForm.addEventListener('submit', (e)=>{ e.preventDefault(); const msg=chatText.value.trim(); if(!msg) return; addBubble(msg,'user'); chatText.value=''; setTimeout(()=> addBubble('ಇದು ಡೆಮೋ ಪ್ರತಿಕ್ರಿಯೆ. ಶೀಘ್ರದಲ್ಲೇ API ಸಂಪರ್ಕಿಸಲಾಗುತ್ತದೆ.'), 400); });
+// Format chat message with code blocks and paragraphs
+function formatChatMessage(text) {
+  // Split text into paragraphs
+  let formatted = text
+    // Convert code blocks (```code```) to proper HTML
+    .replace(/```(\w+)?\n([\s\S]*?)```/g, '<pre class="code-block"><code class="language-$1">$2</code></pre>')
+    // Convert inline code (`code`) to proper HTML
+    .replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>')
+    // Convert line breaks to HTML
+    .replace(/\n\n/g, '</p><p>')
+    .replace(/\n/g, '<br>');
+  
+  // Wrap in paragraph tags
+  formatted = '<p>' + formatted + '</p>';
+  
+  return formatted;
+}
+
+function addBubble(text, who='bot'){ 
+  const d=document.createElement('div'); 
+  d.className=`bubble ${who}`; 
+  
+  // Format text with proper code blocks and paragraphs
+  const formattedText = formatChatMessage(text);
+  d.innerHTML = formattedText;
+  
+  chatBody.appendChild(d); 
+  chatBody.scrollTop=chatBody.scrollHeight; 
+}
+addBubble('Ask me anything about this experiment. I will help you!');
+chatForm.addEventListener('submit', async (e)=>{ 
+  e.preventDefault(); 
+  const msg=chatText.value.trim(); 
+  if(!msg) return; 
+  addBubble(msg,'user'); 
+  chatText.value=''; 
+  
+  // Show typing indicator
+  const typingBubble = document.createElement('div');
+  typingBubble.className = 'bubble bot typing';
+  typingBubble.textContent = 'AI is typing...';
+  chatBody.appendChild(typingBubble);
+  chatBody.scrollTop = chatBody.scrollHeight;
+  
+  try {
+    const response = await sendToGemini(msg);
+    typingBubble.remove();
+    addBubble(response, 'bot');
+  } catch (error) {
+    typingBubble.remove();
+    addBubble('Sorry, I encountered an error. Please try again.', 'bot');
+  }
+});
 
 

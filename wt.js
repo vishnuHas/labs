@@ -13,9 +13,9 @@ themeToggleWT.textContent = document.body.classList.contains('theme-light') ? 'â
 const { wtPrograms } = window.WT_DATA;
 const wtGrid = document.getElementById('wtGrid');
 wtGrid.innerHTML = wtPrograms.map(w => `
-  <article class="card exp-card">
+  <article class="card exp-card dsa-card">
     <div class="card-body">
-      <div class="media-title">${w.title}</div>
+      <div class="media-title dsa-title">${w.title}</div>
       <div class="media-desc">HTML/CSS/JS â€¢ Code only</div>
       <a class="btn" href="wt_exp.html?id=${encodeURIComponent(w.id)}">Open</a>
     </div>

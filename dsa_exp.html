@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ML Program — VTU Lab Mentor</title>
+    <title>DSA Program — VTU Lab Mentor</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -12,14 +12,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" defer></script>
     <script src="data.js" defer></script>
-    <script src="ml_exp.js" defer></script>
+    <script src="dsa_exp.js" defer></script>
   </head>
   <body>
     <header class="site-header">
       <div class="container header-inner">
         <div class="brand">
-          <a href="ml.html" class="nav-link" style="padding:0">←</a>
-          <span class="title">ML Program</span>
+          <a href="dsa.html" class="nav-link" style="padding:0">←</a>
+          <span class="title">Data Structures & Algorithms</span>
         </div>
         <div class="actions">
           <button id="themeToggle" class="btn ghost" aria-label="Toggle theme">🌙</button>
@@ -28,33 +28,42 @@
     </header>
     <main class="section">
       <div class="container">
-        <article class="card glow">
+        <article class="card glow" style="border-image: linear-gradient(120deg, #ff7a7a, #7aff7a) 1;">
           <div class="card-head">
-            <div class="card-title" id="mlTitle">ML Program</div>
-            <div class="card-subtitle">Python code with animated reveal</div>
+            <div class="card-title" id="dsaTitle">DSA Program</div>
+            <div class="card-subtitle" id="dsaSubtitle">Syntax-highlighted C code with animations</div>
           </div>
           <div class="card-body">
             <div class="code-actions">
-              <button id="copyBtn" class="btn ghost" type="button">Copy</button>
+              <button id="copyBtn" class="btn ghost" type="button">Copy Code</button>
             </div>
             <pre id="codeBlock" class="code-block" style="white-space: pre-wrap;"></pre>
           </div>
         </article>
         <article class="card">
           <div class="card-head">
-            <div class="card-title">Software</div>
+            <div class="card-title">Software Required</div>
           </div>
           <div class="card-body">
-            <div id="mlSoftware" class="grid tools"></div>
-            <div style="margin-top:10px; display:flex; align-items:center; gap:10px;">
-              <img src="https://www.python.org/static/img/python-logo.png" alt="Python" style="height:32px;" />
-              <a class="btn" href="https://www.python.org/downloads/" target="_blank" rel="noopener">Get Python</a>
+            <div class="tool">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/1/18/C_Programming_Language.svg" alt="C" class="c-icon" />
+              <div class="tool-info">
+                <div class="tool-title">GCC Compiler</div>
+                <div class="tool-desc">C compiler for running programs</div>
+              </div>
+              <a class="btn" href="https://gcc.gnu.org/" target="_blank" rel="noopener">Download</a>
             </div>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-head">
+            <div class="card-title">Program Description</div>
+          </div>
+          <div class="card-body">
+            <p id="programDescription" class="muted">Loading program description...</p>
           </div>
         </article>
       </div>
     </main>
   </body>
   </html>
-
-
